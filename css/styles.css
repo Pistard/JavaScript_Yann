@@ -1,3 +1,59 @@
-body{
-    color: skyblue;
+#left-col, #right-col{
+    display: inline-block;
+    vertical-align: top;
 }
+#left-col{
+    width:65%;
+}
+#right-col{
+    width: 20%;
+}
+.content-list-view-message, .content-list-view-user {
+    display: flex;
+    padding: 8px;
+}
+.content-list-view-message > img{
+    width:48px;
+    height:54px;
+}
+.content-list-view-message > *{
+    display: inline-block;
+    vertical-align: middle;
+}
+.message-content {
+    flex-grow: 1;
+}
+.message-datetime {
+    min-width:100px;
+    text-align:center;
+}
+.content-list-view-user > img{
+    width:96px;
+    height:108px;
+}
+.content-list-view-user:hover{
+    background-color: lightgray;
+}
+.user{
+    flex-grow: 1;
+}
+.utilisateur:hoover{
+    background-color: gray;
+    cursor:pointer;
+}
+.content-list-view {
+    height:calc(100vh -50px - 55px);
+    overflow-y : scroll;
+}
+.content-list-view-user > div{
+    vertical-align: baseline;
+    font-size: xx-large;
+    flex-grow: 1;
+    text-align: center;
+}
+h2{
+    color: skyblue;
+    text-decoration: underline tomato;
+}
+.user{ text-shadow: 10px 10px 25px black;}
+

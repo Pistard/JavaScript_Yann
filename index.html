@@ -1,20 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
+
     <!-- Latest compiled and minified CSS & JS -->
-    <link rel="stylesheet" media="screen" href="/vendor/bootstrap.js">
-    <script src="/vendor/jquery.js"></script>
-    <script src="/vendor/bootstrap2.js"></script>
-    
+    <link rel="stylesheet" media="screen" href="/vendor/bootstrap/bootstrap.css">
+    <script src="/vendor/jquery/jquery.js"></script>
+    <script src="/vendor/bootstrap/bootstrap.js"></script>
+
     <link rel="stylesheet" href="css/styles.css">
+    <style type="text/css">
+        #js-loaded {
+            background-color: red;
+            color: white;
+            font-weight: 900;
+            text-align: center;
+            padding: 5px 15 px;
+            text-decoration: underline;
+            font-style: italic;
+            text-shadow: 10px 10px 5px black;
+        }
+    </style>
+    <script>
+        function OnDOMLoaded(){
+            var baliseLoad=document.getElementById('js-loaded');
+            baliseLoad.style.backgroundColor="skyblue";
+            baliseLoad.innerHTML="JS chargé !!!";
+        }
+    </script>
 </head>
+
 <body>
-    
+    <div id="js-loaded">js pas encore chargé</div>
+    <!--installtion bootstrap-->
     <nav class="navbar navbar-inverse">
         <a class="navbar-brand" href="#">Tchat.js</a>
         <ul class="nav navbar-nav">
@@ -26,6 +48,52 @@
             </li>
         </ul>
     </nav>
+    <!--fentre chat-->
+    <div id="tchat-content">
+        <div id="tchat-first-row">
+            <!--colonne des messages posté-->
+            <div id="left-col" class="border content-list-view">
+                <h2>messages</h2>
+                <div class="content-list-view-message">
+                    <img class="message-image" src="https://picsum.photos/id/1025/600/400" alt="Image">
+                    <div class="message-datetime">2021-05-25<br />
+                        12:50:00</div>
+                    <div class="message-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut fuga dicta
+                        adipisci, in explicabo culpa illo enim consequatur deleniti, nemo esse alias expedita aperiam
+                        assumenda quam nulla at
+                        officia! Facilis.
+                    </div>
+                </div>
+                <div class="content-list-view-message">
+                    <img class="message-image" src="https://picsum.photos/id/1025/600/400" alt="Image">
+                    <div class="message-datetime">2021-05-25<br />
+                        12:50:00</div>
+                    <div class="message-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut fuga dicta
+                        adipisci, in explicabo culpa illo enim consequatur deleniti, nemo esse alias expedita aperiam
+                        assumenda quam nulla at
+                        officia! Facilis.
+                    </div>
+                </div>
+            </div>
+            <!--colonne des utilisateurs-->
+            <div id="right-col" class="border content-list-view">
+                <h2>utilisateurs</h2>
+                <div class="content-list-view-user">
+                    <img class="user-image" src="https://picsum.photos/id/598/600/400" alt="Image-user">
+                    <div class="user">utilisateur</div>
+                </div>
+                <div class="content-list-view-user">
+                    <img class="user-image" src="https://picsum.photos/id/598/600/400" alt="Image-user">
+                    <div class="user">utilisateur</div>
+                </div>
+            </div>
+        </div>
+        <div id="tchat-second-row" class="border content-list-view">
+            Editeur de messages
+            <div class=" saisie-message">message :</div>
+        </div>
+    </div>
     
 </body>
+
 </html>
