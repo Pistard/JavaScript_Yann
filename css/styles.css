@@ -4,6 +4,7 @@
 }
 #left-col{
     width:65%;
+    height:1000px ;
 }
 #right-col{
     width: 20%;
@@ -11,10 +12,11 @@
 .content-list-view-message, .content-list-view-user {
     display: flex;
     padding: 8px;
+    
 }
 .content-list-view-message > img{
-    width:48px;
-    height:54px;
+    width:70px;
+    height: 80px;
 }
 .content-list-view-message > *{
     display: inline-block;
@@ -30,6 +32,8 @@
 .content-list-view-user > img{
     width:96px;
     height:108px;
+    margin: 20px;
+    vertical-align: center;
 }
 .content-list-view-user:hover{
     background-color: lightgray;
@@ -37,10 +41,7 @@
 .user{
     flex-grow: 1;
 }
-.utilisateur:hoover{
-    background-color: gray;
-    cursor:pointer;
-}
+
 .content-list-view {
     height:calc(100vh -50px - 55px);
     overflow-y : scroll;
@@ -57,3 +58,24 @@ h2{
 }
 .user{ text-shadow: 10px 10px 25px black;}
 
+.saisie-message{
+    vertical-align: text-top;
+
+}
+
+#tchat-second-row form{
+    display: flex;
+
+}
+#message-value{
+    flex-grow: 1;
+}
+
+#tchat-second-row > form > *{
+    vertical-align: top;
+    margin-left: 10px;
+}
+.message-value{
+    width:96px;
+    height:200px;
+}

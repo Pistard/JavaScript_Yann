@@ -25,13 +25,6 @@
             text-shadow: 10px 10px 5px black;
         }
     </style>
-    <script>
-        function OnDOMLoaded(){
-            var baliseLoad=document.getElementById('js-loaded');
-            baliseLoad.style.backgroundColor="skyblue";
-            baliseLoad.innerHTML="JS chargé !!!";
-        }
-    </script>
 </head>
 
 <body>
@@ -68,7 +61,7 @@
                     <img class="message-image" src="https://picsum.photos/id/1025/600/400" alt="Image">
                     <div class="message-datetime">2021-05-25<br />
                         12:50:00</div>
-                    <div class="message-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut fuga dicta
+                    <br class="message-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut fuga dicta
                         adipisci, in explicabo culpa illo enim consequatur deleniti, nemo esse alias expedita aperiam
                         assumenda quam nulla at
                         officia! Facilis.
@@ -80,20 +73,29 @@
                 <h2>utilisateurs</h2>
                 <div class="content-list-view-user">
                     <img class="user-image" src="https://picsum.photos/id/598/600/400" alt="Image-user">
-                    <div class="user">utilisateur</div>
+                    <div class="user-name">Boby</div>
                 </div>
                 <div class="content-list-view-user">
                     <img class="user-image" src="https://picsum.photos/id/598/600/400" alt="Image-user">
-                    <div class="user">utilisateur</div>
+                    <div class="user-name">Jason</div>
                 </div>
             </div>
         </div>
         <div id="tchat-second-row" class="border content-list-view">
-            Editeur de messages
-            <div class=" saisie-message">message :</div>
+            <h2>Editeur de messages</h2>
+            <div class="saisie-message">message :</div>
+            <form action="#" name="message-sender">
+                <input type="text" name = "message-value" id="message-value" placeholder="Ecris là !!!!!">
+                <select name="message-to" id="message-to">
+                    <option value = "boby">boby</option>
+                    <option value = "jason">jason</option>
+                </select>
+                <input type="color" name="message-color" id="message-color">
+                <input type="submit" class="btn btn-success" value="envoyer">
+            </form>
         </div>
     </div>
-    
+    <script src="/js/index.js"></script>
 </body>
 
 </html>
