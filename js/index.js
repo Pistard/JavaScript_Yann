@@ -1,8 +1,8 @@
 
-function onDOMLoaded(){
-    var baliseLoad=document.getElementById('js-loaded');
-    baliseLoad.style.backgroundColor="skyblue";
-    baliseLoad.innerHTML="JS chargé !!!";
+function onDOMLoaded() {
+    var baliseLoad = document.getElementById('js-loaded');
+    baliseLoad.style.backgroundColor = "skyblue";
+    baliseLoad.innerHTML = "JS chargé !!!";
 }
 
 onDOMLoaded();
@@ -11,30 +11,17 @@ onDOMLoaded();
  * @param {MouseEvent} evt evenement de la souris injecter par addEventlistener
  *
  */
-function onuserclick(evt){
-    var userName=this.querySelector('.user-name').innerHTML;
-    //console.log(evt);
-    //console.log(this.querySelector('.user-name'));
-    alert('un user a ete clique :'+userName);
-    document.forms["message-sender"]["message-to"].value=userName;
-    //this.querySelector('.user-name').innerHTML);
-
+function onuserclick(evt) {
+    var userName = this.querySelector('.user-name').innerHTML;
+    alert('un user a ete clique :' + userName);
+    document.forms["message-sender"]["message-to"].value = userName;
 }
-var desBalisesUserDeListe=document.querySelectorAll('.content-list-view-user')
+var desBalisesUserDeListe = document.querySelectorAll('.content-list-view-user')
 //parcours de liste de noeuds selectionnés
-// for (let index = 0; index < desBalisesUserDeListe.length; index++) {
-//     console.log(desBalisesUserDeListe[index]);
-//     desBalisesUserDeListe[index].addEventListener('click', onuserclick);
-// }
 
-desBalisesUserDeListe.forEach(function(element,index){
+desBalisesUserDeListe.forEach(function (element, index) {
     element.addEventListener('click', onuserclick);
 })
-
-// for (var iterator of object) {
-// console.log(iterator);
-// }
-    
 
 // var uneBalise=document.querySelector('.content-list-view-user');
 // uneBalise.addEventListener('click' ,onuserclick)
@@ -42,74 +29,90 @@ desBalisesUserDeListe.forEach(function(element,index){
 function onsubmitmessageform(evt) {
     evt.preventDefault();
     console.log(evt, document.forms);
-    var message={
-                value:document.forms["message-sender"]["message-value"].value,
-                color:document.forms["message-sender"]["message-color"].value,
-                to:document.forms["message-sender"]["message-to"].value,
-                dateTime:new Date()
-                }
+    var message = {
+        value: document.forms["message-sender"]["message-value"].value,
+        color: document.forms["message-sender"]["message-color"].value,
+        to: document.forms["message-sender"]["message-to"].value,
+        dateTime: new Date().toISOString(),
+        userId: whoiam.id
+        //user:whoiam
+    }
 
     console.log(message);
 
     document.forms["message-sender"].reset();
-    document.forms["message-sender"]["message-to"].selectedIndex=-1;
-    apendMessageOnDOM(message,document.querySelector('.content-list-view-message'));
+    document.forms["message-sender"]["message-to"].selectedIndex = -1;
 
+    xhr('http://localhost:5629/messages',
+        function (responseDuServeur) {
+            responseDuServeur = JSON.parse(responseDuServeur);
+            responseDuServeur.user = whoiam;
+            apendMessageOnDOM(responseDuServeur, document.querySelector('.content-list-view-message'))
+        },
+        'POST',
+        message
+    );
+    ;
 }
-
-document.forms["message-sender"].addEventListener('submit',onsubmitmessageform);
-
-function apendMessageOnDOM(message,messageTemplate) {
-    var toFillTemplate=messageTemplate.cloneNode(true);
-    toFillTemplate.querySelector('.message-datetime').innerHTML=message.dateTime.toLocaleString();
-    toFillTemplate.querySelector('.message-content').innerHTML=message.value;
+function apendMessageOnDOM(message, messageTemplate) {
+    var toFillTemplate = messageTemplate.cloneNode(true);
+    toFillTemplate.querySelector('.message-datetime').innerHTML = message.dateTime.toString();
+    toFillTemplate.querySelector('.message-content').innerHTML = message.value;
     toFillTemplate.querySelector('img').src = message.user.img;
     //toFillTemplate.querySelector('.message-color').innerHTML=message.color;
 
     document.querySelector('#left-col').append(toFillTemplate);
 }
 
-function fillSelectWithUser(user){
-    var option=document.createElement('option');
-    option.value=user.nom;
-    option.innerHTML=user.nom;
+function fillSelectWithUser(user) {
+    var option = document.createElement('option');
+    option.value = user.nom;
+    option.innerHTML = user.nom;
     document.forms["message-sender"]["message-to"].append(option);
 }
 
-function apendUserOnDOM(user,userTemplate) {
-    var toFillUserTemplate=userTemplate.cloneNode(true);
-    toFillUserTemplate.querySelector('.user-image').src=user.img;
-    toFillUserTemplate.querySelector('.user-name').innerHTML=user.nom;
+function apendUserOnDOM(user, userTemplate) {
+    var toFillUserTemplate = userTemplate.cloneNode(true);
+    toFillUserTemplate.querySelector('.user-image').src = user.img;
+    toFillUserTemplate.querySelector('.user-name').innerHTML = user.nom;
     toFillUserTemplate.addEventListener('click', onuserclick);
 
     document.querySelector('#right-col').append(toFillUserTemplate);
     fillSelectWithUser(user);
 }
-    
-//     apendUserOnDOM(
-//         {id:1,nom:'alex',img:'https://picsum.photos/id/598/600/401'},
-//         document.querySelector('.content-list-view-user')
-    
-// );
+// users.forEach(function(element) {
+//     apendUserOnDOM(element,document.querySelector('.content-list-view-user'))
+//});
 
-//     apendUserOnDOM(
-//         {id:1,nom:'bert',img:'https://picsum.photos/id/598/600/402'},
-//         document.querySelector('.content-list-view-user')
+xhr('vues/tchat.html',
+    function (resp) {
+        document.querySelector('#main').innerHTML = resp;
+        document.forms["message-sender"].addEventListener('submit', onsubmitmessageform);
+        xhr('http://localhost:5629/messages?_expand=user',
+            function (fluxJsonDuServer) {
+                var arr = JSON.parse(fluxJsonDuServer);
+                console.log(arr);
+                arr.forEach(function (element) {
+                    apendMessageOnDOM(element, document.querySelector('.content-list-view-message'));
+                });
+            }
+        );
+        xhr('http://localhost:5629/users',
+            function (fluxJsonDuServer) {
+                var arr = JSON.parse(fluxJsonDuServer);
+                console.log(arr);
+                arr.forEach(function (element) {
+                    apendUserOnDOM(element, document.querySelector('.content-list-view-user'))
+                });
+            }
+        );
+    }
+);
 
-// );
 
-//     apendUserOnDOM(
-//         {id:1,nom:'gros',img:'https://picsum.photos/id/598/600/403'},
-//         document.querySelector('.content-list-view-user')
 
-// );
-users.forEach(function(element) {
-    apendUserOnDOM(element,document.querySelector('.content-list-view-user'))
-});
-
-messages.forEach(function(element){
-    var leBonUserDeLidDuMessage= users.find(function(userElement){return element.userId===userElement.id});
-    element.user=leBonUserDeLidDuMessage;
-    console.log(element);
-    apendMessageOnDOM(element,document.querySelector('.content-list-view-message'))
-});
+// messages.forEach(function(element){
+//     var leBonUserDeLidDuMessage= users.find(function(userElement){return element.userId===userElement.id});
+//     element.user=leBonUserDeLidDuMessage;
+//     console.log(element);
+//     apendMessageOnDOM(element,document.querySelector('.content-list-view-message'))
