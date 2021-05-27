@@ -12,10 +12,12 @@ onDOMLoaded();
  *
  */
 function onuserclick(evt){
-    console.log(evt);
-    var target=evt.target;
-    console.log(this.querySelector('.user-name'));
-    alert('un user a ete clique :'+this.querySelector('.user-name').innerHTML);
+    var userName=this.querySelector('.user-name').innerHTML;
+    //console.log(evt);
+    //console.log(this.querySelector('.user-name'));
+    alert('un user a ete clique :'+userName);
+    document.forms["message-sender"]["message-to"].value=userName;
+    //this.querySelector('.user-name').innerHTML);
 
 }
 var desBalisesUserDeListe=document.querySelectorAll('.content-list-view-user')
@@ -61,7 +63,53 @@ function apendMessageOnDOM(message,messageTemplate) {
     var toFillTemplate=messageTemplate.cloneNode(true);
     toFillTemplate.querySelector('.message-datetime').innerHTML=message.dateTime.toLocaleString();
     toFillTemplate.querySelector('.message-content').innerHTML=message.value;
+    toFillTemplate.querySelector('img').src = message.user.img;
     //toFillTemplate.querySelector('.message-color').innerHTML=message.color;
 
     document.querySelector('#left-col').append(toFillTemplate);
 }
+
+function fillSelectWithUser(user){
+    var option=document.createElement('option');
+    option.value=user.nom;
+    option.innerHTML=user.nom;
+    document.forms["message-sender"]["message-to"].append(option);
+}
+
+function apendUserOnDOM(user,userTemplate) {
+    var toFillUserTemplate=userTemplate.cloneNode(true);
+    toFillUserTemplate.querySelector('.user-image').src=user.img;
+    toFillUserTemplate.querySelector('.user-name').innerHTML=user.nom;
+    toFillUserTemplate.addEventListener('click', onuserclick);
+
+    document.querySelector('#right-col').append(toFillUserTemplate);
+    fillSelectWithUser(user);
+}
+    
+//     apendUserOnDOM(
+//         {id:1,nom:'alex',img:'https://picsum.photos/id/598/600/401'},
+//         document.querySelector('.content-list-view-user')
+    
+// );
+
+//     apendUserOnDOM(
+//         {id:1,nom:'bert',img:'https://picsum.photos/id/598/600/402'},
+//         document.querySelector('.content-list-view-user')
+
+// );
+
+//     apendUserOnDOM(
+//         {id:1,nom:'gros',img:'https://picsum.photos/id/598/600/403'},
+//         document.querySelector('.content-list-view-user')
+
+// );
+users.forEach(function(element) {
+    apendUserOnDOM(element,document.querySelector('.content-list-view-user'))
+});
+
+messages.forEach(function(element){
+    var leBonUserDeLidDuMessage= users.find(function(userElement){return element.userId===userElement.id});
+    element.user=leBonUserDeLidDuMessage;
+    console.log(element);
+    apendMessageOnDOM(element,document.querySelector('.content-list-view-message'))
+});
