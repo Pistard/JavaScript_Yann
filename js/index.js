@@ -12,9 +12,9 @@ onDOMLoaded();
  *
  */
 function onuserclick(evt) {
-    var userName = this.querySelector('.user-name').innerHTML;
-    alert('un user a ete clique :' + userName);
-    document.forms["message-sender"]["message-to"].value = userName;
+    var userId = this.id.substring(5);
+    //alert('un user a ete clique :' + userName);
+    document.forms["message-sender"]["message-to"].value = userId;
 }
 var desBalisesUserDeListe = document.querySelectorAll('.content-list-view-user')
 //parcours de liste de noeuds selectionnés
@@ -32,7 +32,7 @@ function onsubmitmessageform(evt) {
     var message = {
         value: document.forms["message-sender"]["message-value"].value,
         color: document.forms["message-sender"]["message-color"].value,
-        to: document.forms["message-sender"]["message-to"].value,
+        to:Number (document.forms["message-sender"]["message-to"].value),
         dateTime: new Date().toISOString(),
         userId: whoiam.id
         //user:whoiam
@@ -59,6 +59,10 @@ function apendMessageOnDOM(message, messageTemplate) {
     toFillTemplate.querySelector('.message-datetime').innerHTML = message.dateTime.toString();
     toFillTemplate.querySelector('.message-content').innerHTML = message.value;
     toFillTemplate.querySelector('img').src = message.user.img;
+    if(message.to===whoiam.id){
+    toFillTemplate.querySelector('.message-content').style.fontStyle="italic"
+    toFillTemplate.querySelector('.message-content').style.fontWeight="900"}
+
     //toFillTemplate.querySelector('.message-color').innerHTML=message.color;
 
     document.querySelector('#left-col').append(toFillTemplate);
@@ -66,13 +70,14 @@ function apendMessageOnDOM(message, messageTemplate) {
 
 function fillSelectWithUser(user) {
     var option = document.createElement('option');
-    option.value = user.nom;
+    option.value = user.id;
     option.innerHTML = user.nom;
     document.forms["message-sender"]["message-to"].append(option);
 }
 
 function apendUserOnDOM(user, userTemplate) {
     var toFillUserTemplate = userTemplate.cloneNode(true);
+    toFillUserTemplate.id='user-'+user.id;
     toFillUserTemplate.querySelector('.user-image').src = user.img;
     toFillUserTemplate.querySelector('.user-name').innerHTML = user.nom;
     toFillUserTemplate.addEventListener('click', onuserclick);
@@ -84,30 +89,30 @@ function apendUserOnDOM(user, userTemplate) {
 //     apendUserOnDOM(element,document.querySelector('.content-list-view-user'))
 //});
 
-xhr('vues/tchat.html',
-    function (resp) {
-        document.querySelector('#main').innerHTML = resp;
-        document.forms["message-sender"].addEventListener('submit', onsubmitmessageform);
-        xhr('http://localhost:5629/messages?_expand=user',
-            function (fluxJsonDuServer) {
-                var arr = JSON.parse(fluxJsonDuServer);
-                console.log(arr);
-                arr.forEach(function (element) {
-                    apendMessageOnDOM(element, messageTemplate);
-                });
-            }
-        );
-        xhr('http://localhost:5629/users',
-            function (fluxJsonDuServer) {
-                var arr = JSON.parse(fluxJsonDuServer);
-                console.log(arr);
-                arr.forEach(function (element) {
-                    apendUserOnDOM(element, userTemplate)
-                });
-            }
-        );
-    }
-);
+// xhr('vues/tchat.html',
+//     function (resp) {
+//         document.querySelector('#main').innerHTML = resp;
+//         document.forms["message-sender"].addEventListener('submit', onsubmitmessageform);
+//         xhr('http://localhost:5629/messages?_expand=user',
+//             function (fluxJsonDuServer) {
+//                 var arr = JSON.parse(fluxJsonDuServer);
+//                 console.log(arr);
+//                 arr.forEach(function (element) {
+//                     apendMessageOnDOM(element, messageTemplate);
+//                 });
+//             }
+//         );
+//         xhr('http://localhost:5629/users',
+//             function (fluxJsonDuServer) {
+//                 var arr = JSON.parse(fluxJsonDuServer);
+//                 console.log(arr);
+//                 arr.forEach(function (element) {
+//                     apendUserOnDOM(element, userTemplate)
+//                 });
+//             }
+//         );
+//     }
+// );
 
 
 
