@@ -5,13 +5,16 @@
  * @param {String} method méthode HTTP soit GET/POST/PATCH/PUT/DELETE default: GET
  * @param {Object} body corps objet js de la requete pour l'envoi Default: undefined
  */
-function xhr(url, callback, method, body) {
+function xhr(url, callback, method, body, async) {
     //mise en place de parametre par défaut
     if (undefined === method) {
         method = 'GET'
     }
+    if (undefined === async) {
+        async = true
+    }
     var xhr = new XMLHttpRequest()
-    xhr.open(method, url);
+    xhr.open(method, url, async);
     xhr.setRequestHeader("Content-Type","application/json");
     // xhr.open('GET', 'vues/tchat.html')
     xhr.onreadystatechange = function () {
@@ -21,5 +24,6 @@ function xhr(url, callback, method, body) {
         callback(xhr.response)
         console.log(xhr);
     }
-    xhr.send(JSON.stringify(body))
+    xhr.send(JSON.stringify(body));
+    if(!async){callback(xhr.response)}
 }

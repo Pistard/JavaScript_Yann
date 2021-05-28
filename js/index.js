@@ -47,7 +47,7 @@ function onsubmitmessageform(evt) {
         function (responseDuServeur) {
             responseDuServeur = JSON.parse(responseDuServeur);
             responseDuServeur.user = whoiam;
-            apendMessageOnDOM(responseDuServeur, document.querySelector('.content-list-view-message'))
+            apendMessageOnDOM(responseDuServeur, messageTemplate)
         },
         'POST',
         message
@@ -93,7 +93,7 @@ xhr('vues/tchat.html',
                 var arr = JSON.parse(fluxJsonDuServer);
                 console.log(arr);
                 arr.forEach(function (element) {
-                    apendMessageOnDOM(element, document.querySelector('.content-list-view-message'));
+                    apendMessageOnDOM(element, messageTemplate);
                 });
             }
         );
@@ -102,7 +102,7 @@ xhr('vues/tchat.html',
                 var arr = JSON.parse(fluxJsonDuServer);
                 console.log(arr);
                 arr.forEach(function (element) {
-                    apendUserOnDOM(element, document.querySelector('.content-list-view-user'))
+                    apendUserOnDOM(element, userTemplate)
                 });
             }
         );
